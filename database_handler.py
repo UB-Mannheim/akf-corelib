@@ -10,6 +10,9 @@ import os
 import shutil
 from pathlib import Path
 
+	
+
+
 class FileStruct():
 
     def __init__(self):
@@ -94,7 +97,8 @@ class DatabaseHandler(object):
                 if not fstruct.dbname in self.files:
                     self.files[fstruct.dbname] = []
                 lastdbname = fstruct.dbname
-            else: fstruct.dbpath = self.dbdir + '/' + lastdbname + '.db'
+            else:
+                fstruct.dbpath = self.dbdir + '/' + lastdbname + '.db'
 
             self.files[fstruct.dbname].append(fstruct)
         return
@@ -149,6 +153,26 @@ class DatabaseHandler(object):
     def get_outputfiles(self):
         return self.outputfiles
 
+    def fetch_dataframe(self):
+        dataframes = []
+
+        for key in self.files:
+            for file in self.files[key]:
+                df_current = HocrConverter().hocr2df(file.path, ocr_profile=file.ocr_profile,
+                                                     additional_profiles=["sql_akf_new_msa_best"],
+                                                     mode_ocromore=True)
+                dataframes.append(df_current)
+
+        return dataframes
+
+    def fetch_ocromore_data(self, file):
+
+        ocromore_data_current = {}
+        ocromore_data_current_lines = HocrConverter().parse_ocromore_hocr(file)
+        ocromore_data_current['lines'] = ocromore_data_current_lines
+        ocromore_data_current['file_info'] = file
+
+        return ocromore_data_current
 
 
     def parse_to_db(self, delete_and_create_dir=True):
