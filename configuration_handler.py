@@ -14,6 +14,7 @@ class SingleTone(object):
     def get_value():
         return SingleTone.__instance.val
 
+
 class ConfigurationHandler(object):
 
     def __init__(self, first_init = False, fill_unkown_args = False, coded_configuration_paths=None):

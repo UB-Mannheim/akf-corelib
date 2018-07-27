@@ -93,7 +93,7 @@ class HocrConverter(object):
                 #idx = self.line2dict(line,df_dict,ocr,ocr_profile,idx,lidx)
                 current_line_object["hocr_coordinates"] = line.coordinates
                 current_line_object["text"] = line.ocr_text
-                print("ocrtext", line.ocr_text)
+                # print("ocrtext", line.ocr_text)
                 current_line_object["words"] = []
                 for word_index, word in enumerate(line.words):
                     current_word_object = {}

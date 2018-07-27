@@ -1,5 +1,5 @@
 from collections import deque
-from utils.random import Random
+from random import Random
 
 
 class Stack(object):
