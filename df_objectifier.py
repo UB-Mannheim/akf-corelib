@@ -264,7 +264,71 @@ class DFObjectifier(object):
         print("Clean data ✓")
         return
 
-    def match_line(self,force=False,pad=2,padmid=0.575,lhm=2):
+    def match_line(self,force=False,pad=2,padmid=0.725,lhm=2):
+        #TODO: rework other preprocesses...
+        """
+        Matches the lines over all datasets
+        :param force: Force to calculate the matching lines (overwrites old values)
+        :param pad: Padding area where to find similar lines (0.25 -> 25 prc)
+        :param max_col: Maximum value for matching lines (prevent infinity loops)
+        :return:
+        """
+        try:
+            if force:
+                self.df["calc_line_idx"] = -1
+            if self.df.loc[self.df["calc_line_idx"] == -1].empty: return False
+            print("Start line matching")
+            tdf = self.df.reset_index()
+            tdf["line_height"] = tdf["line_y1"] - tdf["line_y0"]
+            linedict = tdf.to_dict(orient="list")
+            pparam = PParam()
+            pparam.max_row = max(linedict["line_idx"])*3
+            pparam.y1_max = max(linedict["line_y1"])+1
+            while True:
+                print(f"Match line: {pparam.lineIdx}")
+                pparam.y0 = min(linedict["line_y0"])
+                pparam.y1 = linedict["line_y1"][linedict["line_y0"].index(pparam.y0)]
+                if pparam.y0 > pparam.y1:
+                    linedict["line_y1"][linedict["line_y0"].index(pparam.y0)] = pparam.y0+1
+                    pparam.y1 = pparam.y0+1
+                if -1 not in linedict["calc_line_idx"]:
+                    print("Match lines ✓")
+                    break
+                pparam.diff = (pparam.y1 - pparam.y0) * pad
+                pparam.diffmid = pparam.diff
+                if pad > padmid: pparam.diffmid = (pparam.y1 - pparam.y0) * padmid
+                # Select all y0 which are smaller as y0+25%diff and greater as y0+25%diff
+                con =  ((pparam.y1-pparam.y0) < np.array([x*lhm for x in linedict['line_height']])) & \
+                       ((pparam.y0 - pparam.diff) < np.array(linedict['line_y0'])) & \
+                       ((pparam.y0 + pparam.diffmid) > np.array(linedict['line_y0'])) & \
+                       ((pparam.y1 - pparam.diffmid) < np.array(linedict['line_y1'])) & \
+                       ((pparam.y1 + pparam.diff) > (np.array(linedict['line_y1'])))
+                offset = 0
+                word_set = {}
+                for idx in np.nonzero(con)[0].tolist():
+                    engine_stat = (linedict["ocr"][idx], linedict["ocr_profile"][idx])
+                    if word_set.get(engine_stat,None) == None: word_set[engine_stat] = {}
+                    word_set[engine_stat][idx] = linedict["word_x0"][idx]
+                old_idx = 0
+                for (ocr,engine) in word_set:
+                    for idx, x0 in sorted(word_set[(ocr,engine)].items(),key=lambda x: x[1]):
+                        linedict["calc_line_idx"][idx] = pparam.lineIdx
+                        linedict["word_idx"][idx] = old_idx+offset
+                        linedict["line_y0"][idx] = pparam.y1_max
+                        old_idx += 1
+                pparam.lineIdx += 1
+                if pparam.lineIdx == pparam.max_row:
+                    print("Match lines ✗")
+                    print(f"The max of {pparam.max_row} col was reached. Maybe something went wrong?")
+                    break
+            self.df["calc_line_idx"] = linedict["calc_line_idx"]
+            self.df["calc_word_idx"] = linedict["word_idx"]
+        except Exception as e:
+            print(f"Exception: {e}")
+            pass
+        return True
+
+    def obsolete_match_line(self,force=False,pad=2,padmid=0.575,lhm=2):
         #TODO: rework other preprocesses...
         """
         Matches the lines over all datasets
@@ -333,7 +397,7 @@ class DFObjectifier(object):
             pass
         return True
 
-    def obsolete_match_line(self,force=False, pad=5, padmid=0.55,lhm=2):
+    def obsolete_match_dfline(self,force=False, pad=5, padmid=0.55,lhm=2):
         """
         Matches the lines over all datasets
         :param force: Force to calculate the matching lines (overwrites old values)
