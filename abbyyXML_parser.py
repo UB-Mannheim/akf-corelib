@@ -66,6 +66,10 @@ def get_xml_document(fpath):
                     line.update_coordinates(copy.copy(item.attrib))
                     if "suspicious" in item.attrib:
                         word.suspicouscount += 1
+            if clean_tag == "formatting":
+                word._xconfs.extend([100] * len(item.text))
+                word.ocr_text.append(item.text)
+                word.coordinates = line.coordinates
         if word is not None:
             line.words.append(word)
             if len(word.ocr_text) > 0 and (word.suspicouscount / len(word.ocr_text)) > 2.0:
