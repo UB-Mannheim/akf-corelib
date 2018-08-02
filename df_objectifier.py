@@ -682,7 +682,7 @@ class DFObjectifier(object):
                         for emptyln in range(0,lc):
                                 infile.write("\n")
                     groupw = group[groupl == lidx][word]
-                    widxarr = groupw.unique()
+                    widxarr = sorted(groupw.unique())
                     txtline = []
                     for widx in widxarr:
                         txtline.append("".join(group.loc[groupl==lidx].loc[groupw == widx][char].tolist()))
