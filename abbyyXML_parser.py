@@ -9,6 +9,7 @@ def get_xml_document(fpath):
     """
     VALIDXML = ["FineReader10-schema-v1.xml"]
     GETLINECOORDS= False
+    BASELINECORRECTION = False
     doc = Document()
     try:
         # Parste the xml to an obj
@@ -40,6 +41,8 @@ def get_xml_document(fpath):
                 if DELLINE:
                     del doc.page[-1]
                     DELLINE = False
+                if BASELINECORRECTION and int(item.attrib["baseline"]) < int(item.attrib["b"]) + (int(item.attrib["b"])-int(item.attrib["t"]))/5 :
+                    item.attrib["b"] = item.attrib["baseline"]
                 line = Line(item.attrib)
                 word = Word()
                 doc.page.append(line)
@@ -67,6 +70,21 @@ def get_xml_document(fpath):
                     if "suspicious" in item.attrib:
                         word.suspicouscount += 1
             if clean_tag == "formatting":
+                #if not GETLINECOORDS and COW:
+                #    line.coordinates = (None, None, None, None)
+                #    COW = False
+                #if line.coordinates != (None, None, None, None) and len(doc.page) > 1:
+                #    if line.coordinates[0] < doc.page[-2].coordinates[2]:
+                #        if item.attrib["b"] <= doc.page[-2].coordinates[3]:
+                #            item.attrib["t"] = line.coordinates[1]
+                #            item.attrib["b"] = line.coordinates[3]
+                #word.update_coordinates(item.attrib)
+                #if item.attrib.get("charConfidence", None) is None:
+                #    word._xconfs.extend([100] * len(item.text))
+                #else:
+                #    word._xconfs.append(item.attrib["charConfidence"])
+                #word.ocr_text.append(item.text)
+                #line.update_coordinates(copy.copy(item.attrib))
                 word._xconfs.extend([100] * len(item.text))
                 word.ocr_text.append(item.text)
                 word.coordinates = line.coordinates
