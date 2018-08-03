@@ -1,6 +1,7 @@
 import os
 import shutil
 
+
 class FileHandler(object):
     """
     Utility class for performing various default file operations.
@@ -15,4 +16,5 @@ class FileHandler(object):
 
     @staticmethod
     def create_directory_tree(path):
-        os.makedirs(path)
+        if not os.path.exists(path):
+            os.makedirs(path)
