@@ -171,10 +171,7 @@ class DatabaseHandler(object):
         ocromore_data_current_lines = HocrConverter().parse_ocromore_hocr(file)
         ocromore_data_current['lines'] = ocromore_data_current_lines
         ocromore_data_current['file_info'] = file
-        if additional_info is not None:
-            ocromore_data_current['additional_info'] = additional_info
-        else:
-            ocromore_data_current['additional_info'] = {}
+        ocromore_data_current['additional_info'] = additional_info
 
 
         return ocromore_data_current
