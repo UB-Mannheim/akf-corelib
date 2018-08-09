@@ -10,6 +10,7 @@ def get_xml_document(fpath):
     VALIDXML = ["FineReader10-schema-v1.xml"]
     GETLINECOORDS= False
     BASELINECORRECTION = False
+    WORDWISE = False
     doc = Document()
     try:
         # Parste the xml to an obj
@@ -69,7 +70,7 @@ def get_xml_document(fpath):
                     line.update_coordinates(copy.copy(item.attrib))
                     if "suspicious" in item.attrib:
                         word.suspicouscount += 1
-            if clean_tag == "formatting":
+            if clean_tag == "formatting" and WORDWISE:
                 #if not GETLINECOORDS and COW:
                 #    line.coordinates = (None, None, None, None)
                 #    COW = False
