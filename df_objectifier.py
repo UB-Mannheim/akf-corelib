@@ -586,7 +586,7 @@ class DFObjectifier(object):
                 minx0 = min(set(x0arr))
                 posx0 = np.where(np.array(list(x0arr)) == minx0)[0][0]
                 minx1 = curline["word_x1"][posx0]
-                if minx1 < minx0: minx1 = minx0+1
+                if minx1 <= minx0: minx1 = minx0+1
                 diff = (curline["word_y1"][posx0] - curline["word_y0"][posx0]) * pad
                 if diff > (minx1-minx0)/2: diff = (minx1-minx0)/2
                 result = np.where(np.array(list(x0arr)) < minx1-diff)[0]
