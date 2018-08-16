@@ -1,5 +1,5 @@
 from collections import deque
-from random import Random
+from akf_corelib.random import Random
 
 
 class Stack(object):
