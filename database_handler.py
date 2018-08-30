@@ -82,7 +82,7 @@ class DatabaseHandler(object):
     def fetch_files(self, fileglob, filetypes):
         self.files = {}
 
-        files = chain.from_iterable(glob.iglob(fileglob + filetype, recursive=True) for filetype in filetypes)
+        files = chain.from_iterable(sorted(glob.iglob(fileglob + filetype, recursive=True)) for filetype in filetypes)
         lastdbname = ""
         for file in files:
             fstruct = FileStruct()
