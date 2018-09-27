@@ -311,6 +311,7 @@ class DFObjectifier(object):
                     word_set[engine_stat][idx] = linedict["word_x0"][idx]
                 old_idx = 0
                 for (ocr,engine) in word_set:
+                    old_idx = 0
                     for idx, x0 in sorted(word_set[(ocr,engine)].items(),key=lambda x: x[1]):
                         linedict["calc_line_idx"][idx] = pparam.lineIdx
                         linedict["word_idx"][idx] = old_idx+offset
@@ -934,6 +935,7 @@ class DFSelObj(object):
         self.orig_df = df
         self.orig_text = self._orig_text()
         self.ivalue = Value()
+        self._update_order()
 
     def _get_data(self,df):
         data = {}
@@ -1139,6 +1141,18 @@ class DFSelObj(object):
                 wordarr['text'][idx] = wordstr
                 wordarr['UID'][idx] = uidarr
             return wordarr
+
+    def _update_order(self):
+        # This corrects the order (ascending word_matching)
+        if self.data["word_match"] != sorted(self.data["word_match"]):
+            wordarr = {"word_match": [],"calc_char": [],"UID": [],"char_weight": [],"calc_word_idx": []}
+            for idx in set(self.data["word_match"]):
+                widxarr = np.where(np.array(self.data["word_match"]) == idx)[0]
+                for category in wordarr.keys():
+                    wordarr[category].extend(self.data[category][widxarr[0]:widxarr[-1]+1])
+            for category in wordarr.keys():
+                self.data[category] = wordarr[category]
+        return
 
     def value(self,attr,pos,val=None,widx=None,wsval=75,):
         if attr in self.data.keys():
