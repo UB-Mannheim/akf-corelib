@@ -1149,7 +1149,8 @@ class DFSelObj(object):
             for idx in set(self.data["word_match"]):
                 widxarr = np.where(np.array(self.data["word_match"]) == idx)[0]
                 for category in wordarr.keys():
-                    wordarr[category].extend(self.data[category][widxarr[0]:widxarr[-1]+1])
+                    for widx in list(widxarr):
+                        wordarr[category].append(self.data[category][widx])
             for category in wordarr.keys():
                 self.data[category] = wordarr[category]
         return
