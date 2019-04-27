@@ -145,7 +145,7 @@ class Word():
     def _xwconf(self):
         """
         Calculates the word confidence.
-        Algo: Multipy every confidence
+        Algo: Multiply every confidence
         :return:
         """
         res = 0

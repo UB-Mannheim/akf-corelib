@@ -86,7 +86,7 @@ class DFObjectifier(object):
 
     def get_line_obj(self,*,ocr=None,ocr_profile=None,line_idx=None,word_idx=None,char_idx=None,col=None,query=None,res=False, empty=False):
         """
-        Gets an Object with all lines
+        Gets an object with all lines
         :param ocr: Index param
         :param ocr_profile: Index param
         :param line_idx: Index param
@@ -142,7 +142,7 @@ class DFObjectifier(object):
 
     def get_obj(self,*,ocr=None,ocr_profile=None,line_idx=None,word_idx=None,char_idx=None,col=None,query=None,res=False, empty=False):
         """
-        Gets an Object for the specifc parameters
+        Gets an object for the specific parameters
         :param ocr: Index param
         :param ocr_profile: Index param
         :param line_idx: Index param
@@ -210,8 +210,8 @@ class DFObjectifier(object):
     def clean_data(self, outliercleaner = True,iqrmul=2.0, outlierex = None):
         """
         Unspaces the words in the dataset based on a pivot
-        :param sort_by: Set the pivot selectin order
-        :param pad: Set the multiplicator which calculats the padding value for the matching algo.
+        :param sort_by: Set the pivot selecting order
+        :param pad: Set the multiplicator which calculates the padding value for the matching algo.
                     Pad = Multiplicator * (Height of Line)
         :param padrb: Special padding for right border
         :return:
@@ -470,8 +470,8 @@ class DFObjectifier(object):
     def unspace(self, sort_by=None, pad=1.0, padrb=0.00):
         """
         Unspaces the words in the dataset based on a pivot
-        :param sort_by: Set the pivot selectin order
-        :param pad: Set the multiplicator which calculats the padding value for the matching algo.
+        :param sort_by: Set the pivot selecting order
+        :param pad: Set the multiplicator which calculates the padding value for the matching algo.
                     Pad = Multiplicator * (Height of Line)
         :param padrb: Special padding for right border
         :return:
@@ -843,8 +843,8 @@ class DFObjectifier(object):
     def _obsolete_unspace_(self, sort_by=None, pad=0.7):
         """
         Unspaces the words in the dataset based on a pivot
-        :param sort_by: Set the pivot selectin order
-        :param pad: Set the multiplicator which calculats the padding value for the matching algo.
+        :param sort_by: Set the pivot selecting order
+        :param pad: Set the multiplicator which calculates the padding value for the matching algo.
                     Pad = Multiplicator * (Height of Line)
         :return:
         """
@@ -918,9 +918,9 @@ class DFSelObj(object):
     ==========
     PROPERTIES
     ==========
-        textstr     -   Represents the calc_char seperated by whitespaces
+        textstr     -   Represents the calc_char separated by whitespaces
         ----------------------------------------------------------------------------------------------------------------
-        word        -   Represents the calc_char seperated by match_word in segments
+        word        -   Represents the calc_char separated by match_word in segments
         ----------------------------------------------------------------------------------------------------------------
     """
 
@@ -1039,7 +1039,7 @@ class DFSelObj(object):
                 else:
                     textarr.append(text)
                     text = ""
-            # create a text variable from the newly created array seperated by spaces for each word
+            # create a text variable from the newly created array separated by spaces for each word
             text = " ".join(textarr)+" "+text
             text.strip()
         if text != self.textstr:
@@ -1106,7 +1106,7 @@ class DFSelObj(object):
                     ws = len(np.where(np.array(list(text[:idx + 1])) == " ")[0])
                 self.text(idx - ws, wc, insertfront=front)
         except Exception:
-            print("Cant update text. Seems that the wildcards matching seems wrong.")
+            print("Can't update text. Seems that the wildcards matching seems wrong.")
 
     @property
     def textstr(self):
@@ -1376,8 +1376,8 @@ class Value(object):
     """
     def __init__(self):
         """
-        :prop pos: Postion
-        :prop attr: Attribut (column name)
+        :prop pos: Position
+        :prop attr: Attribute (column name)
         :prop val: Value
         :prop ws:  Whitespace
         :prop wsval: Charconf value of the whitespace

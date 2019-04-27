@@ -14,7 +14,7 @@ class RegexUtil(object):
 
         :param pattern: regex pattern which will be wrapped
         :param text: string to use for search
-        :param err_number: allowed errors which where match is stil triggered
+        :param err_number: allowed errors which where match is still triggered
         :return: result of regex search
         """
         compiled_wrapper = regex.compile(r"(?b)(?:" + pattern + "){e<=" + str(err_number) + "}")

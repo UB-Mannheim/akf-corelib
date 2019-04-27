@@ -23,6 +23,6 @@ def get_table(tablename, dbpath, schema=None, index=None, coerce_float=True, par
     return df
 
 def spinner():
-    # Contains unicode snippets to create a spinner animation for loading processess
+    # Contains unicode snippets to create a spinner animation for loading processes
     spinner = cycle([u'⣾',u'⣷',u'⣯',u'⣟',u'⡿', u'⢿',u'⣻', u'⣽'])
     return spinner
